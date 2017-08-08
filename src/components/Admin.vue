@@ -14,6 +14,7 @@
 <script>
 import VueCrud from './VueCrud'
 import Settings from './Settings'
+const endPoint = window.location.href.indexOf('localhost:') > -1 ? 'https://localhost:3005/v1' : 'https://api.storeblok.com/v1'
 
 export default {
   name: 'admin',
@@ -25,7 +26,7 @@ export default {
       loading: true,
       config: {
         component: 'v-admin',
-        endPoint: 'https://localhost:3005/v1',
+        endPoint: endPoint,
         headers: {},
         body: [
           {
