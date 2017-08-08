@@ -41,7 +41,9 @@ export default {
 
         for (let i = 0; i < res.data.length; i++) {
           let data = res.data[i]
-          this.model[data.code][data.setting_key] = data.setting
+          if (typeof this.model[data.code] !== 'undefined' && typeof this.model[data.code][data.setting_key] !== 'undefined') {
+            this.model[data.code][data.setting_key] = data.setting
+          }
         }
       })
   },

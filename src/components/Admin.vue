@@ -14,7 +14,8 @@
 <script>
 import VueCrud from './VueCrud'
 import Settings from './Settings'
-const endPoint = window.location.href.indexOf('localhost:') > -1 ? 'https://localhost:3005/v1' : 'https://api.storeblok.com/v1'
+const local = window.location.href.indexOf('localhost:') > -1
+const endPoint = local ? 'https://localhost:3005/v1' : 'https://api.storeblok.com/v1'
 
 export default {
   name: 'admin',
@@ -103,10 +104,15 @@ export default {
   },
 
   created () {
-    window.storyblok.getSession((data) => {
-      this.config.headers['Authorization'] = data.session.access_token
+    if (local) {
+      this.config.headers['Authorization'] = 'Token token=3a9073a24d131fd3380d0d4a6c0ba7d3'
       this.loading = false
-    })
+    } else {
+      window.storyblok.getSession((data) => {
+        this.config.headers['Authorization'] = data.session.access_token
+        this.loading = false
+      })
+    }
   },
 
   components: {

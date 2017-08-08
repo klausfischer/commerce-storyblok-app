@@ -8,6 +8,12 @@
       <dd>{{ rootModel.ordered_on }}</dd>
       <dt>Email</dt>
       <dd>{{ rootModel.email }}</dd>
+      <dt>Address</dt>
+      <dd v-if="rootModel.ship_address">
+        {{ rootModel.ship_address.firstname }}<br>
+        {{ rootModel.ship_address.address1 }}<br>
+        {{ rootModel.ship_address.zip }} {{ rootModel.ship_address.country }}
+      </dd>
       <dt>History</dt>
       <dd>
         <ul>
@@ -40,7 +46,9 @@
             prop="meta_data"
             label="Image">
             <template scope="scope">
-              <img :src="scope.row.meta_data.image" width="40">
+              <div v-if="scope.row.meta_data">
+                <img :src="scope.row.meta_data.image" width="40">
+              </div>
             </template>
           </el-table-column>
         </el-table>
