@@ -22,6 +22,14 @@
           </li>
         </ul>
       </dd>
+      <dt>Payments</dt>
+      <dd>
+        <ul>
+          <li v-for="payment in rootModel.payments">
+            {{ payment.status }} (Created at {{ payment.created_at }})
+          </li>
+        </ul>
+      </dd>
       <dt>Line items</dt>
       <dd>
         <el-table

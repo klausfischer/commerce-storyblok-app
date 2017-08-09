@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Admin from '@/components/Admin'
+import LoggedOut from '@/components/LoggedOut'
 import VueResource from 'vue-resource'
 
 Vue.filter('humanize', function (value) {
@@ -20,12 +21,13 @@ Vue.filter('humanize', function (value) {
 Vue.use(VueResource)
 Vue.use(Router)
 
-Vue.http.options.headers = {
-  'Authorization': null
-}
-
-export default new Router({
+let routerInstance = new Router({
   routes: [
+    {
+      path: '/logged_out',
+      name: 'logged_out',
+      component: LoggedOut
+    },
     {
       path: '/',
       name: 'home',
@@ -46,3 +48,17 @@ export default new Router({
     }
   ]
 })
+
+Vue.http.options.headers = {
+  'Authorization': null
+}
+
+Vue.http.interceptors.push(function (request, next) {
+  next(function (response) {
+    if (response.status === 401) {
+      routerInstance.push({name: 'logged_out'})
+    }
+  })
+})
+
+export default routerInstance
