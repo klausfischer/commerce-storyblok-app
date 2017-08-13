@@ -26,7 +26,7 @@ export default {
       loading: true,
       model: {
         stripe: { public_key: '', private_key: '' },
-        general_setting: { default_shipping_price: '', default_tax: '' }
+        general_setting: { default_shipping_price: '', default_tax: '', domain: '' }
       }
     }
   },
