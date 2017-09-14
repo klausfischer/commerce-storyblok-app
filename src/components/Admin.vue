@@ -36,43 +36,42 @@ export default {
             route: 'orders',
             name: 'Orders',
             hideCreate: true,
+            hideActionBar: true,
             formFields: [
               {
-                component: 'el-tab',
+                component: 'order',
                 label: 'General',
-                fields: [
+                fields: [],
+                body: [
                   {
-                    component: 'order',
-                    label: 'Order',
-                    name: 'order_number'
-                  },
-                  {
-                    component: 'el-input',
-                    type: 'textarea',
-                    label: 'Notes',
-                    name: 'notes'
+                    component: 'order'
                   }
                 ]
               }
             ],
             columns: [
               {
-                component: 'el-table-column',
+                component: 'simple-text',
                 label: 'Ordernumber',
                 property: 'order_number'
               },
               {
-                component: 'el-table-column',
+                component: 'simple-text',
                 label: 'Status',
                 property: 'status'
               },
               {
-                component: 'el-table-column',
+                component: 'date-time',
                 label: 'Ordered on',
                 property: 'ordered_on'
               },
               {
-                component: 'el-table-column',
+                component: 'simple-text',
+                label: 'Currency',
+                property: 'currency'
+              },
+              {
+                component: 'currency',
                 label: 'Total',
                 property: 'total'
               }

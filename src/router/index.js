@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Admin from '@/components/Admin'
 import LoggedOut from '@/components/LoggedOut'
 import VueResource from 'vue-resource'
+import Currency from '../libs/currency'
 
 Vue.filter('humanize', function (value) {
   if (typeof value === 'undefined') {
@@ -16,6 +17,26 @@ Vue.filter('humanize', function (value) {
                        })
 
   return humanized
+})
+
+Vue.filter('datetime', function (date) {
+  if (typeof date === 'undefined') {
+    return ''
+  }
+
+  var dateObj = new Date(date)
+  return dateObj.toLocaleDateString() + ' ' + dateObj.toLocaleTimeString()
+})
+
+Vue.filter('currency', Currency)
+
+Vue.filter('date', function (date, format) {
+  if (typeof date === 'undefined') {
+    return ''
+  }
+
+  var dateObj = new Date(date)
+  return dateObj.toLocaleDateString()
 })
 
 Vue.use(VueResource)

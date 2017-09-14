@@ -27,14 +27,7 @@
         v-for="column in config.columns">
 
         <template scope="scope">
-          <span v-if="scope.row[column.property] === true || scope.row[column.property] === false">
-            <el-tag>
-              {{scope.row[column.property] === true ? 'true' : 'false'}}
-            </el-tag>
-          </span>
-          <span v-else>
-            {{scope.row[column.property]}}
-          </span>
+          <span :is="column.component" :value="scope.row[column.property]"></span>
         </template>
       </el-table-column>
     </el-table>
@@ -51,10 +44,20 @@
 </template>
 
 <script>
+import SimpleText from './SimpleText.vue'
+import DateTime from './DateTime.vue'
+import Currency from './Currency.vue'
+
 export default {
   name: 'v-crud-index',
 
   props: ['config', 'rootConfig', 'api', 'model'],
+
+  components: {
+    SimpleText,
+    Currency,
+    DateTime
+  },
 
   data () {
     return {
