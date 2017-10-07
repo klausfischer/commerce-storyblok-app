@@ -71,7 +71,7 @@ export default {
 
   methods: {
     disconnect () {
-      window.location.assign(this.rootConfig.endPoint.replace('/v1', '') + '/connect/deauthorize')
+      window.open(this.rootConfig.endPoint.replace('/v1', '') + '/connect/deauthorize', '_blank', 'toolbar=0,location=0,menubar=0')
     },
 
     connectStripe () {
@@ -80,7 +80,7 @@ export default {
 
       authApi.get({action: 'oauth'})
         .then((res) => {
-          window.location.assign(res.data.url)
+          window.open(res.data.url)
         })
         .catch((res) => {
           this.$message('Something went wrong. Please try again.')
