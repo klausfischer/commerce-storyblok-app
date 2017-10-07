@@ -83,7 +83,7 @@ export default {
 
     connectStripe () {
       let authApi = this.$resource(
-        this.rootConfig.endPoint.replace('/v1', '') + '/connect/{action}', {}, {}, {headers: this.rootConfig.headers})
+        this.rootConfig.endPoint.replace('/v1', '') + '/connect/{action}', {}, {}, {credentials: true, headers: this.rootConfig.headers})
 
       this.gotUrl = false
       this.loading = true
