@@ -123,7 +123,7 @@ export default {
 
   methods: {
     stripeRedirect () {
-      if (window.location.search.indexOf('?stripe_connected=1') !== false) {
+      if (window.location.search.indexOf('?stripe_connected=1') > -1) {
         this.$router.push({name: 'admin', params: {model: 'settings', id: 'all', action: 'index'}})
       }
     },
