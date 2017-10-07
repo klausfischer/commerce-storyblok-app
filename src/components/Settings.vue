@@ -7,7 +7,12 @@
         <el-button @click="disconnect">Disconnect your Stripe account</el-button>
       </div>
       <div v-if="!userIsConnected">
-        <el-button type="primary" @click="connectStripe">Connect your Stripe account</el-button>
+        <div v-if="!gotUrl">
+          <el-button type="primary" @click="connectStripe">Connect your Stripe account</el-button>
+        </div>
+        <div v-if="gotUrl">
+          <a :href="url" class="el-button el-button--primary" target="_blank">Click here to start connecting Stripe to this app</a>
+        </div>
       </div>
 
       <div v-for="(item, key) in model">
@@ -46,7 +51,9 @@ export default {
       model: {
         general_setting: { default_shipping_price: '', default_tax: '', domain: '', currency: 'usd' }
       },
-      settings: []
+      settings: [],
+      gotUrl: false,
+      url: ''
     }
   },
 
@@ -78,9 +85,14 @@ export default {
       let authApi = this.$resource(
         this.rootConfig.endPoint.replace('/v1', '') + '/connect/{action}', {}, {}, {headers: this.rootConfig.headers})
 
+      this.gotUrl = false
+      this.loading = true
+
       authApi.get({action: 'oauth'})
         .then((res) => {
-          window.open(res.data.url)
+          this.loading = false
+          this.gotUrl = true
+          this.url = res.data.url
         })
         .catch((res) => {
           this.$message('Something went wrong. Please try again.')
