@@ -45,17 +45,20 @@
 
 <script>
 import SimpleText from './SimpleText.vue'
+import Boolean from './Boolean.vue'
 import DateTime from './DateTime.vue'
 import Currency from './Currency.vue'
+import api from '../libs/api'
 
 export default {
   name: 'v-crud-index',
 
-  props: ['config', 'rootConfig', 'api', 'model'],
+  props: ['config', 'rootConfig', 'model'],
 
   components: {
     SimpleText,
     Currency,
+    Boolean,
     DateTime
   },
 
@@ -88,7 +91,7 @@ export default {
 
     loadData () {
       this.loading = true
-      this.api
+      api.res
         .get({page: this.page})
         .then(this.setTableData)
     },

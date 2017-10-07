@@ -19,12 +19,14 @@
 
 <script>
 import Select from './fields/Select.vue'
+import ImageUpload from './fields/ImageUpload.vue'
 import Order from './Order.vue'
+import api from '../libs/api'
 
 export default {
   name: 'v-crud-edit',
 
-  props: ['config', 'rootConfig', 'api', 'params', 'id'],
+  props: ['config', 'rootConfig', 'params', 'id'],
 
   data () {
     return {
@@ -35,6 +37,7 @@ export default {
 
   components: {
     'v-crud-select': Select,
+    'v-crud-image-upload': ImageUpload,
     'order': Order
   },
 
@@ -45,7 +48,7 @@ export default {
   methods: {
     loadData () {
       this.loading = true
-      this.api
+      api.res
         .get({id: this.id})
         .then(this.setModelData)
     },
@@ -59,7 +62,7 @@ export default {
         params = this.model
       }
 
-      this.api
+      api.res
         .update({id: this.id}, params)
         .then(() => {
           this.$router.push({name: 'admin', params: {id: 'all', action: 'index'}})

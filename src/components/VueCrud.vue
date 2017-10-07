@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div :model="model" :action="action" :id="id" :api="api" :root-config="rootConfig" :config="config" :is="activeComponent"></div>
+    <div :model="model" :action="action" :id="id" :root-config="rootConfig" :config="config" :is="activeComponent"></div>
   </div>
 </template>
 
@@ -10,6 +10,7 @@ import Vue from 'vue'
 import VueCrudIndex from './VueCrudIndex.vue'
 import VueCrudEdit from './VueCrudEdit.vue'
 import VueCrudNew from './VueCrudNew.vue'
+import api from '../libs/api'
 import 'element-ui/lib/theme-default/index.css'
 
 Vue.use(ElementUI)
@@ -22,7 +23,6 @@ export default {
   data () {
     return {
       activeComponent: 'v-crud-index',
-      api: null,
       params: {}
     }
   },
@@ -50,8 +50,12 @@ export default {
 
   methods: {
     setApi () {
-      this.api = this.$resource(
-        this.rootConfig.endPoint + '/' + this.config.resource, {}, {}, {headers: this.rootConfig.headers})
+      api.init = (resource) => {
+        return this.$resource(
+          this.rootConfig.endPoint + '/' + resource, {}, {}, {headers: this.rootConfig.headers})
+      }
+
+      api.res = api.init(this.config.resource)
     }
   }
 }

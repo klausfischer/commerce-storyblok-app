@@ -78,6 +78,101 @@ export default {
             ]
           },
           {
+            component: 'v-crud',
+            resource: 'products/{id}',
+            route: 'products',
+            name: 'Products',
+            formFields: [
+              {
+                component: 'el-tab',
+                label: 'Details',
+                fields: [
+                  {
+                    component: 'el-checkbox',
+                    label: 'Enabled',
+                    name: 'enabled'
+                  },
+                  {
+                    component: 'el-input',
+                    label: 'Name',
+                    name: 'name'
+                  },
+                  {
+                    component: 'el-input',
+                    label: 'SKU',
+                    name: 'sku'
+                  },
+                  {
+                    component: 'el-input',
+                    label: 'Excerpt',
+                    type: 'textarea',
+                    name: 'excerpt'
+                  },
+                  {
+                    component: 'el-input',
+                    label: 'Description',
+                    type: 'textarea',
+                    name: 'description'
+                  }
+                ]
+              },
+              {
+                component: 'el-tab',
+                label: 'Prices',
+                fields: [
+                  {
+                    component: 'el-input',
+                    label: 'Price',
+                    name: 'price'
+                  },
+                  {
+                    component: 'el-input',
+                    label: 'Saleprice',
+                    name: 'saleprice'
+                  }
+                ]
+              },
+              {
+                component: 'el-tab',
+                label: 'Images',
+                fields: [
+                  {
+                    component: 'v-crud-image-upload',
+                    label: 'Images',
+                    name: 'images'
+                  }
+                ]
+              }
+            ],
+            columns: [
+              {
+                component: 'simple-text',
+                label: 'SKU',
+                property: 'sku'
+              },
+              {
+                component: 'simple-text',
+                label: 'Name',
+                property: 'name'
+              },
+              {
+                component: 'simple-text',
+                label: 'Quantity',
+                property: 'quantity'
+              },
+              {
+                component: 'currency',
+                label: 'Price',
+                property: 'price'
+              },
+              {
+                component: 'boolean',
+                label: 'Enabled',
+                property: 'enabled'
+              }
+            ]
+          },
+          {
             component: 'settings',
             resource: 'settings/{id}',
             route: 'settings',

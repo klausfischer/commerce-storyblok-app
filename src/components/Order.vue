@@ -22,7 +22,7 @@
             width="180">
           </el-table-column>
           <el-table-column
-            prop="value"
+            prop="value | currency('')"
             label="Price">
           </el-table-column>
           <el-table-column

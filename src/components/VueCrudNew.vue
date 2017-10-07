@@ -16,11 +16,12 @@
 
 <script>
 import Select from './fields/Select.vue'
+import api from '../libs/api'
 
 export default {
   name: 'v-crud-new',
 
-  props: ['config', 'rootConfig', 'api', 'params', 'id'],
+  props: ['config', 'rootConfig', 'params', 'id'],
 
   data () {
     return {
@@ -42,7 +43,7 @@ export default {
         params = this.model
       }
 
-      this.api
+      api.res
         .save(params)
         .then(() => {
           this.$router.push({name: 'admin', params: {id: 'all', action: 'index'}})
