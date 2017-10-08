@@ -15,13 +15,15 @@
         </div>
       </div>
 
-      <div v-for="(item, key) in model">
-        <h2>{{ key|humanize }}</h2>
-
-        <el-form-item :key="innerKey" :label="innerKey|humanize" v-for="(innerItem, innerKey) in item">
-          <el-input v-model="model[key][innerKey]"></el-input>
-        </el-form-item>
+      <div class="setting__live">
+        <el-checkbox true-label="1" false-label="0" v-model="model.stripe.livemode">Enable live mode?</el-checkbox>
       </div>
+
+      <h2>General Settings</h2>
+
+      <el-form-item :key="innerKey" :label="innerKey|humanize" v-for="(innerItem, innerKey) in model.general_setting">
+        <el-input v-model="model.general_setting[innerKey]"></el-input>
+      </el-form-item>
 
       <el-form-item>
         <el-button type="primary" @click="onSubmit">Save</el-button>
@@ -49,6 +51,7 @@ export default {
       api: null,
       loading: true,
       model: {
+        stripe: { livemode: '0' },
         general_setting: { default_shipping_price: '', default_tax: '', domain: '', currency: 'usd' }
       },
       settings: [],
@@ -113,5 +116,10 @@ export default {
 <style>
   h2 {
     margin-bottom: 10px;
+  }
+
+  .setting__live {
+    margin-top: 20px;
+    margin-bottom: 30px;
   }
 </style>
