@@ -201,10 +201,12 @@ export default {
     if (local) {
       this.config.headers['Authorization'] = 'Token token=3a9073a24d131fd3380d0d4a6c0ba7d3'
       this.loading = false
+      this.stripeRedirect()
     } else {
       window.storyblok.getSession((data) => {
         this.config.headers['Authorization'] = data.session.access_token
         this.loading = false
+        this.stripeRedirect()
       })
     }
   },
@@ -215,6 +217,12 @@ export default {
   },
 
   methods: {
+    stripeRedirect () {
+      if (window.location.search.indexOf('?stripe_connected=1') > -1) {
+        this.$router.push({name: 'admin', params: {model: 'settings', id: 'all', action: 'index'}})
+      }
+    },
+
     handleSelect (index) {
       this.$router.push({name: 'admin', params: {model: index, id: 'all', action: 'index'}})
     }
