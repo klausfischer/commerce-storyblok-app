@@ -94,6 +94,7 @@ export default {
       api.res
         .get({page: this.page})
         .then(this.setTableData)
+        .catch(api.errorHandler)
     },
 
     getHeader (res, header) {

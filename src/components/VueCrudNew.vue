@@ -48,9 +48,7 @@ export default {
         .then(() => {
           this.$router.push({name: 'admin', params: {id: 'all', action: 'index'}})
         })
-        .catch((res) => {
-          this.$message.error('Oops, something went wrong. ' + JSON.stringify(res.data))
-        })
+        .catch(api.errorHandler)
     }
   }
 }

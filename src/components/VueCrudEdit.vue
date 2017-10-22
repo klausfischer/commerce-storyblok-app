@@ -51,6 +51,7 @@ export default {
       api.res
         .get({id: this.id})
         .then(this.setModelData)
+        .catch(api.errorHandler)
     },
 
     onSubmit () {
@@ -67,6 +68,7 @@ export default {
         .then(() => {
           this.$router.push({name: 'admin', params: {id: 'all', action: 'index'}})
         })
+        .catch(api.errorHandler)
     },
 
     setModelData (res) {

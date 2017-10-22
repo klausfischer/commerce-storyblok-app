@@ -173,6 +173,63 @@ export default {
             ]
           },
           {
+            component: 'v-crud',
+            resource: 'customer_groups/{id}',
+            route: 'customer_groups',
+            name: 'Customer Groups',
+            formFields: [
+              {
+                component: 'el-tab',
+                label: 'Details',
+                fields: [
+                  {
+                    component: 'el-input',
+                    label: 'Name',
+                    name: 'name'
+                  },
+                  {
+                    component: 'el-input',
+                    label: 'Pricelist',
+                    name: 'pricelist_id'
+                  }
+                ]
+              }
+            ],
+            columns: [
+              {
+                component: 'simple-text',
+                label: 'Name',
+                property: 'name'
+              }
+            ]
+          },
+          {
+            component: 'v-crud',
+            resource: 'pricelists/{id}',
+            route: 'pricelists',
+            name: 'Pricelists',
+            formFields: [
+              {
+                component: 'el-tab',
+                label: 'Details',
+                fields: [
+                  {
+                    component: 'el-input',
+                    label: 'Name',
+                    name: 'name'
+                  }
+                ]
+              }
+            ],
+            columns: [
+              {
+                component: 'simple-text',
+                label: 'Name',
+                property: 'name'
+              }
+            ]
+          },
+          {
             component: 'settings',
             resource: 'settings/{id}',
             route: 'settings',
