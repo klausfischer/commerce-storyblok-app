@@ -9,9 +9,7 @@ export default {
 
     if (error.body && error.status !== 500) {
       each(error.body, (item, key) => {
-        item.forEach((msg) => {
-          errors.push(h('div', key + ' ' + msg))
-        })
+        errors.push(h('div', item))
       })
     } else {
       errors.push(h('div', 'Ops something went wrong'))
