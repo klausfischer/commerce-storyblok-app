@@ -3,7 +3,7 @@
     <el-tabs>
       <el-tab-pane :key="tab.label" v-for="tab in config.formFields" :label="tab.label">
         <el-form-item :key="field.name" :label="field.label" v-for="field in tab.fields">
-          <div :placeholder="field.placeholder" :options="field.options" :type="field.type" :is="field.component" v-model="model[field.name]"></div>
+          <div :placeholder="field.placeholder" :root-config="rootConfig" :options="field.options" :type="field.type" :is="field.component" v-model="model[field.name]"></div>
         </el-form-item>
       </el-tab-pane>
     </el-tabs>
@@ -16,6 +16,10 @@
 
 <script>
 import Select from './fields/Select.vue'
+import CrudBoolean from './fields/Boolean.vue'
+import RemoteSelect from './fields/RemoteSelect.vue'
+import ImageUpload from './fields/ImageUpload.vue'
+import Order from './Order.vue'
 import api from '../libs/api'
 
 export default {
@@ -30,7 +34,11 @@ export default {
   },
 
   components: {
-    'v-crud-select': Select
+    'v-crud-select': Select,
+    'v-crud-boolean': CrudBoolean,
+    'v-crud-remote-select': RemoteSelect,
+    'v-crud-image-upload': ImageUpload,
+    'order': Order
   },
 
   methods: {

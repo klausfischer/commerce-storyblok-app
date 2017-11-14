@@ -3,8 +3,27 @@
     <div class="header">
       <span class="title">{{ config.name }}</span>
       <span class="buttons" v-if="!config.hideCreate">
-        <el-button @click="$router.push({name: 'admin', params: {model: model, id: 'all', action: 'new'}})">New {{ config.name }}</el-button>
+        <div>
+          <el-input
+            placeholder="Search"
+            icon="search"
+            v-model="term">
+          </el-input>
+        </div>
+        <el-upload
+          ref="upload"
+          :action="importEndpoint"
+          :headers="rootConfig.headers"
+          v-if="config.import">
+          <el-button slot="trigger">Import</el-button>
+        </el-upload>
+
+        <el-button @click="$router.push({name: 'admin', params: {model: model, id: 'all', action: 'new'}})">New</el-button>
       </span>
+    </div>
+    <div class="selection" v-if="multipleSelection.length > 0">
+      <el-button @click="massDeletion">Delete</el-button>
+      {{ multipleSelection.length }} selected
     </div>
     <el-table
       v-loading="loading"
@@ -69,7 +88,8 @@ export default {
       pageSize: 0,
       numFound: 0,
       page: 1,
-      loading: false
+      loading: false,
+      term: ''
     }
   },
 
@@ -80,6 +100,16 @@ export default {
   watch: {
     model () {
       this.loadData()
+    },
+
+    term () {
+      this.loadData()
+    }
+  },
+
+  computed: {
+    importEndpoint () {
+      return this.rootConfig.endPoint + '/' + this.config.import
     }
   },
 
@@ -92,7 +122,7 @@ export default {
     loadData () {
       this.loading = true
       api.res
-        .get({page: this.page})
+        .get({page: this.page, term: this.term})
         .then(this.setTableData)
         .catch(api.errorHandler)
     },
@@ -105,8 +135,8 @@ export default {
     },
 
     setTableData (res) {
-      this.pageSize = this.getHeader(res, 'Per-Page')
-      this.numFound = this.getHeader(res, 'Total')
+      this.pageSize = this.getHeader(res, 'per-page')
+      this.numFound = this.getHeader(res, 'total')
 
       if (this.config.rootObject) {
         this.tableData = res.body[this.config.rootObject]
@@ -117,21 +147,40 @@ export default {
       this.loading = false
     },
 
-    handlRowClick (row) {
-      this.$router.push({name: 'admin', params: {id: row.id, action: 'edit', model: this.config.route}})
+    handlRowClick (row, event, column) {
+      if (column.type === 'default') {
+        this.$router.push({name: 'admin', params: {id: row.id, action: 'edit', model: this.config.route}})
+      }
     },
 
     handleSelectionChange (val) {
       this.multipleSelection = val
+    },
+
+    massDeletion () {
+      this.multipleSelection.forEach((item, index) => {
+        setTimeout(() => {
+          api.res
+            .delete({id: item.id})
+            .then(() => {
+              this.loadData()
+            })
+            .catch(api.errorHandler)
+        }, 200 * index)
+      })
     }
   }
 }
 </script>
 
-<style scoped>
+<style>
   .footer {
     padding: 30px 0;
     text-align: center;
+  }
+
+  .selection {
+    margin-bottom: 20px;
   }
 
   .header {
@@ -147,5 +196,22 @@ export default {
 
   .buttons {
     margin-left: auto;
+  }
+
+  .buttons > * {
+    margin-left: 10px !important;
+    display: inline-block;
+  }
+
+  .buttons .el-upload-list {
+    position: absolute;
+    background: #FFF;
+    z-index: 3;
+    border-radius: 5px;
+    margin-top: 5px;
+  }
+
+  .buttons .el-upload-list__item:first-child {
+    margin-top: 0;
   }
 </style>

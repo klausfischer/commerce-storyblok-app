@@ -14,6 +14,8 @@
 <script>
 import VueCrud from './VueCrud'
 import Settings from './Settings'
+import schema from '../schema'
+import params from '../libs/params'
 const local = window.location.href.indexOf('localhost:') > -1
 const endPoint = local ? 'https://localhost:3005/v1' : 'https://api.storeblok.com/v1'
 
@@ -29,213 +31,7 @@ export default {
         component: 'v-admin',
         endPoint: endPoint,
         headers: {},
-        body: [
-          {
-            component: 'v-crud',
-            resource: 'orders/{id}',
-            route: 'orders',
-            name: 'Orders',
-            hideCreate: true,
-            hideActionBar: true,
-            formFields: [
-              {
-                component: 'order',
-                label: 'General',
-                fields: [],
-                body: [
-                  {
-                    component: 'order'
-                  }
-                ]
-              }
-            ],
-            columns: [
-              {
-                component: 'simple-text',
-                label: 'Ordernumber',
-                property: 'order_number'
-              },
-              {
-                component: 'simple-text',
-                label: 'Status',
-                property: 'status'
-              },
-              {
-                component: 'date-time',
-                label: 'Ordered on',
-                property: 'ordered_on'
-              },
-              {
-                component: 'simple-text',
-                label: 'Currency',
-                property: 'currency'
-              },
-              {
-                component: 'currency',
-                label: 'Total',
-                property: 'total'
-              }
-            ]
-          },
-          {
-            component: 'v-crud',
-            resource: 'products/{id}',
-            route: 'products',
-            name: 'Products',
-            formFields: [
-              {
-                component: 'el-tab',
-                label: 'Details',
-                fields: [
-                  {
-                    component: 'el-checkbox',
-                    label: 'Enabled',
-                    name: 'enabled'
-                  },
-                  {
-                    component: 'el-input',
-                    label: 'Name',
-                    name: 'name'
-                  },
-                  {
-                    component: 'el-input',
-                    label: 'SKU',
-                    name: 'sku'
-                  },
-                  {
-                    component: 'el-input',
-                    label: 'Excerpt',
-                    type: 'textarea',
-                    name: 'excerpt'
-                  },
-                  {
-                    component: 'el-input',
-                    label: 'Description',
-                    type: 'textarea',
-                    name: 'description'
-                  }
-                ]
-              },
-              {
-                component: 'el-tab',
-                label: 'Prices',
-                fields: [
-                  {
-                    component: 'el-input',
-                    label: 'Price',
-                    name: 'price'
-                  },
-                  {
-                    component: 'el-input',
-                    label: 'Saleprice',
-                    name: 'saleprice'
-                  }
-                ]
-              },
-              {
-                component: 'el-tab',
-                label: 'Images',
-                fields: [
-                  {
-                    component: 'v-crud-image-upload',
-                    label: 'Images',
-                    name: 'images'
-                  }
-                ]
-              }
-            ],
-            columns: [
-              {
-                component: 'simple-text',
-                label: 'SKU',
-                property: 'sku'
-              },
-              {
-                component: 'simple-text',
-                label: 'Name',
-                property: 'name'
-              },
-              {
-                component: 'simple-text',
-                label: 'Quantity',
-                property: 'quantity'
-              },
-              {
-                component: 'currency',
-                label: 'Price',
-                property: 'price'
-              },
-              {
-                component: 'boolean',
-                label: 'Enabled',
-                property: 'enabled'
-              }
-            ]
-          },
-          {
-            component: 'v-crud',
-            resource: 'customer_groups/{id}',
-            route: 'customer_groups',
-            name: 'Customer Groups',
-            formFields: [
-              {
-                component: 'el-tab',
-                label: 'Details',
-                fields: [
-                  {
-                    component: 'el-input',
-                    label: 'Name',
-                    name: 'name'
-                  },
-                  {
-                    component: 'el-input',
-                    label: 'Pricelist',
-                    name: 'pricelist_id'
-                  }
-                ]
-              }
-            ],
-            columns: [
-              {
-                component: 'simple-text',
-                label: 'Name',
-                property: 'name'
-              }
-            ]
-          },
-          {
-            component: 'v-crud',
-            resource: 'pricelists/{id}',
-            route: 'pricelists',
-            name: 'Pricelists',
-            formFields: [
-              {
-                component: 'el-tab',
-                label: 'Details',
-                fields: [
-                  {
-                    component: 'el-input',
-                    label: 'Name',
-                    name: 'name'
-                  }
-                ]
-              }
-            ],
-            columns: [
-              {
-                component: 'simple-text',
-                label: 'Name',
-                property: 'name'
-              }
-            ]
-          },
-          {
-            component: 'settings',
-            resource: 'settings/{id}',
-            route: 'settings',
-            name: 'Shop Config'
-          }
-        ]
+        body: schema.body
       }
     }
   },
@@ -255,7 +51,26 @@ export default {
   },
 
   created () {
-    if (local) {
+    let group = params('group')
+    this.config.body = schema[group] || schema.default
+    let first = this.config.body[0]
+    this.$router.push({name: 'admin', params: {model: first.route, id: 'all', action: 'index'}})
+
+    if (params('storeblok')) {
+      let url = 'https://' + params('storeblok') + '.storeblok.com/admin/users/get_api_provision'
+      if (local) {
+        url = 'http://' + params('storeblok') + '.localhost.com/admin/users/get_api_provision'
+      }
+      let api = this.$resource(
+        url, {}, {}, {credentials: true})
+
+      api.get()
+        .then((res) => {
+          this.config.headers['Authorization'] = res.body.access_token
+          this.loading = false
+          this.stripeRedirect()
+        })
+    } else if (local) {
       this.config.headers['Authorization'] = 'Token token=3a9073a24d131fd3380d0d4a6c0ba7d3'
       this.loading = false
       this.stripeRedirect()
