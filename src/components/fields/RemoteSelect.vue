@@ -11,7 +11,7 @@
     <el-option
       v-for="item in results"
       :key="item.id"
-      :label="item.name"
+      :label="item[searchKey]"
       :value="item.id">
     </el-option>
   </el-select>
@@ -32,6 +32,9 @@
       api () {
         return this.$resource(
             [this.rootConfig.endPoint, this.options.resource].join('/'), {}, {}, {headers: this.rootConfig.headers})
+      },
+      searchKey () {
+        return this.options.searchKey || 'name'
       }
     },
     props: ['options', 'placeholder', 'value', 'rootConfig'],
@@ -42,7 +45,7 @@
       value () {
         this.api.get({id: this.value})
           .then((res) => {
-            this.proxyValue = res.data.name
+            this.proxyValue = res.data[this.searchKey]
           })
           .catch((res) => {
             console.error(res)
@@ -54,7 +57,7 @@
       updateValue (v) {
         this.proxyValue = this.results.filter(item => {
           return item.id === v
-        })[0].name
+        })[0][this.searchKey]
 
         this.$emit('input', v)
       },
@@ -67,7 +70,7 @@
               this.loading = false
 
               this.results = res.data.filter(item => {
-                return item.name.toLowerCase()
+                return item[this.searchKey].toLowerCase()
                   .indexOf(query.toString().toLowerCase()) > -1
               })
             })

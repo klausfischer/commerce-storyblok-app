@@ -150,6 +150,118 @@ export default {
       name: 'Shop Config'
     }
   ],
+  catalogue: [
+    {
+      component: 'v-crud',
+      resource: 'testimonials/{id}',
+      route: 'testimonials',
+      name: 'Testimonials',
+      formFields: [
+        {
+          component: 'el-tab',
+          label: 'Details',
+          fields: [
+            {
+              component: 'v-crud-remote-select',
+              label: 'Product',
+              name: 'product_id',
+              options: {
+                resource: 'products/{id}',
+                multiple: false
+              }
+            },
+            {
+              component: 'v-crud-boolean',
+              label: 'approved',
+              name: 'approved'
+            },
+            {
+              component: 'el-input',
+              label: 'message',
+              name: 'message'
+            },
+            {
+              component: 'el-input',
+              label: 'firstname',
+              name: 'firstname'
+            },
+            {
+              component: 'el-input',
+              label: 'lastname',
+              name: 'lastname'
+            },
+            {
+              component: 'el-input',
+              label: 'city',
+              name: 'city'
+            },
+            {
+              component: 'el-input',
+              label: 'country',
+              name: 'country'
+            },
+            {
+              component: 'el-input',
+              label: 'sex',
+              name: 'sex'
+            },
+            {
+              component: 'v-crud-remote-select',
+              label: 'Customer',
+              name: 'customer_id',
+              options: {
+                resource: 'customers/{id}',
+                multiple: false,
+                searchKey: 'email'
+              }
+            },
+            {
+              component: 'el-input',
+              label: 'private_message',
+              name: 'private_message'
+            },
+            {
+              component: 'el-input',
+              label: 'rating_look',
+              name: 'rating_look'
+            },
+            {
+              component: 'el-input',
+              label: 'rating_usability',
+              name: 'rating_usability'
+            },
+            {
+              component: 'el-input',
+              label: 'rating_support',
+              name: 'rating_support'
+            },
+            {
+              component: 'el-input',
+              label: 'rating_total',
+              name: 'rating_total'
+            },
+            {
+              component: 'v-crud-boolean',
+              label: 'stared',
+              name: 'stared'
+            }
+          ]
+        }
+      ],
+      columns: [
+        {
+          component: 'date-time',
+          label: 'Created at',
+          property: 'created_at'
+        },
+        {
+          component: 'simple-text',
+          label: 'Rating',
+          property: 'rating_total'
+        }
+      ]
+    }
+  ],
   settings: [
     {
       component: 'v-crud',
