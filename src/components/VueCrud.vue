@@ -11,7 +11,7 @@ import VueCrudIndex from './VueCrudIndex.vue'
 import VueCrudEdit from './VueCrudEdit.vue'
 import VueCrudNew from './VueCrudNew.vue'
 import api from '../libs/api'
-import 'element-ui/lib/theme-default/index.css'
+import '../../theme/index.css'
 import locale from 'element-ui/lib/locale/lang/en'
 
 Vue.use(ElementUI, {locale})
