@@ -68,11 +68,7 @@
           this.api.get({term: query})
             .then((res) => {
               this.loading = false
-
-              this.results = res.data.filter(item => {
-                return item[this.searchKey].toLowerCase()
-                  .indexOf(query.toString().toLowerCase()) > -1
-              })
+              this.results = res.data
             })
             .catch((res) => {
               this.loading = false

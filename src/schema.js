@@ -167,43 +167,30 @@ export default {
               name: 'product_id',
               options: {
                 resource: 'products/{id}',
-                multiple: false
+                multiple: false,
+                searchKey: 'sku'
               }
             },
             {
               component: 'v-crud-boolean',
-              label: 'approved',
+              label: 'Approved',
               name: 'approved'
             },
             {
               component: 'el-input',
-              label: 'message',
+              type: 'textarea',
+              label: 'Message',
               name: 'message'
             },
             {
               component: 'el-input',
-              label: 'firstname',
+              label: 'Firstname',
               name: 'firstname'
             },
             {
               component: 'el-input',
-              label: 'lastname',
+              label: 'Lastname',
               name: 'lastname'
-            },
-            {
-              component: 'el-input',
-              label: 'city',
-              name: 'city'
-            },
-            {
-              component: 'el-input',
-              label: 'country',
-              name: 'country'
-            },
-            {
-              component: 'el-input',
-              label: 'sex',
-              name: 'sex'
             },
             {
               component: 'v-crud-remote-select',
@@ -217,33 +204,8 @@ export default {
             },
             {
               component: 'el-input',
-              label: 'private_message',
-              name: 'private_message'
-            },
-            {
-              component: 'el-input',
-              label: 'rating_look',
-              name: 'rating_look'
-            },
-            {
-              component: 'el-input',
-              label: 'rating_usability',
-              name: 'rating_usability'
-            },
-            {
-              component: 'el-input',
-              label: 'rating_support',
-              name: 'rating_support'
-            },
-            {
-              component: 'el-input',
-              label: 'rating_total',
+              label: 'Rating',
               name: 'rating_total'
-            },
-            {
-              component: 'v-crud-boolean',
-              label: 'stared',
-              name: 'stared'
             }
           ]
         }
@@ -256,8 +218,18 @@ export default {
         },
         {
           component: 'simple-text',
+          label: 'Name',
+          property: 'firstname'
+        },
+        {
+          component: 'simple-text',
           label: 'Rating',
           property: 'rating_total'
+        },
+        {
+          component: 'boolean',
+          label: 'Approved',
+          property: 'approved'
         }
       ]
     }
