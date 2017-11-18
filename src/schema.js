@@ -378,6 +378,129 @@ export default {
           property: 'name'
         }
       ]
+    },
+    {
+      component: 'v-crud',
+      resource: 'products/{id}',
+      import: 'products',
+      route: 'products',
+      name: 'Product Import',
+      formFields: [
+        {
+          component: 'el-tab',
+          label: 'Details',
+          fields: [
+            {
+              component: 'el-input',
+              label: 'SKU',
+              name: 'sku'
+            },
+            {
+              component: 'el-input',
+              label: 'Name',
+              name: 'name'
+            }
+          ]
+        }
+      ],
+      columns: [
+        {
+          component: 'simple-text',
+          label: 'SKU',
+          property: 'sku'
+        },
+        {
+          component: 'simple-text',
+          label: 'Name',
+          property: 'name'
+        }
+      ]
+    },
+    {
+      component: 'v-crud',
+      resource: 'assets/{id}',
+      import: 'assets',
+      route: 'assets',
+      hideCreate: true,
+      name: 'Assets',
+      formFields: [
+        {
+          component: 'el-tab',
+          label: 'Details',
+          fields: [
+            {
+              component: 'v-crud-image',
+              label: 'Filename',
+              name: 'filename'
+            }
+          ]
+        }
+      ],
+      columns: [
+        {
+          component: 'simple-text',
+          label: 'Filename',
+          property: 'filename'
+        }
+      ]
+    },
+    {
+      component: 'v-crud',
+      resource: 'customers/{id}',
+      route: 'customers',
+      exportable: true,
+      hideCreate: true,
+      name: 'Customers',
+      formFields: [
+        {
+          component: 'el-tab',
+          label: 'Details',
+          fields: [
+            {
+              component: 'el-input',
+              label: 'Firstname',
+              name: 'firstname'
+            },
+            {
+              component: 'el-input',
+              label: 'Lastname',
+              name: 'lastname'
+            },
+            {
+              component: 'el-input',
+              label: 'Company',
+              name: 'company'
+            },
+            {
+              component: 'el-input',
+              label: 'Email',
+              name: 'email'
+            }
+          ]
+        }
+      ],
+      columns: [
+        {
+          component: 'simple-text',
+          label: 'Email',
+          property: 'email'
+        },
+        {
+          component: 'simple-text',
+          label: 'Firstname',
+          property: 'firstname'
+        },
+        {
+          component: 'simple-text',
+          label: 'Lastname',
+          property: 'lastname'
+        },
+        {
+          component: 'simple-text',
+          label: 'Company',
+          property: 'company'
+        }
+      ]
     }
   ]
 }

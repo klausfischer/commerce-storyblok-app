@@ -4,7 +4,6 @@
     :http-request="doUpload"
     :multiple="true"
     :on-remove="handleRemove"
-    action="https://jsonplaceholder.typicode.com/posts/"
     list-type="picture">
     <el-button size="small" type="primary">Click to upload</el-button>
     <div slot="tip" class="el-upload__tip">jpg/png files with a size less than 5000kb</div>

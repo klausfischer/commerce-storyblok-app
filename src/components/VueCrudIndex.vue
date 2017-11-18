@@ -2,7 +2,7 @@
   <div>
     <div class="header">
       <span class="title">{{ config.name }}</span>
-      <span class="buttons" v-if="!config.hideCreate">
+      <span class="buttons">
         <div>
           <el-input
             placeholder="Search"
@@ -10,15 +10,26 @@
             v-model="term">
           </el-input>
         </div>
-        <el-upload
-          ref="upload"
-          :action="importEndpoint"
-          :headers="rootConfig.headers"
-          v-if="config.import">
-          <el-button slot="trigger">Import</el-button>
-        </el-upload>
+        <div class="upload-btn">
+          <el-upload
+            ref="upload"
+            :action="importEndpoint"
+            :headers="rootConfig.headers"
+            :show-file-list="true"
+            :multiple="true"
+            :on-success="handleUploadSuccess"
+            v-if="config.import">
+            <el-button slot="trigger">Import</el-button>
+          </el-upload>
+          <el-button @click="clearImport" v-if="showClearBtn">Clear</el-button>
+        </div>
 
-        <el-button @click="$router.push({name: 'admin', params: {model: model, id: 'all', action: 'new'}})">New</el-button>
+        <el-button v-if="config.exportable" @click="doExport">
+          Export
+        </el-button>
+        <el-button v-if="!config.hideCreate" @click="$router.push({name: 'admin', params: {model: model, id: 'all', action: 'new'}})">
+          New
+        </el-button>
       </span>
     </div>
     <div class="selection" v-if="multipleSelection.length > 0">
@@ -68,6 +79,7 @@ import Boolean from './Boolean.vue'
 import DateTime from './DateTime.vue'
 import Currency from './Currency.vue'
 import api from '../libs/api'
+import download from '../libs/download'
 
 export default {
   name: 'v-crud-index',
@@ -89,7 +101,8 @@ export default {
       numFound: 0,
       page: 1,
       loading: false,
-      term: ''
+      term: '',
+      showClearBtn: false
     }
   },
 
@@ -100,6 +113,9 @@ export default {
   watch: {
     model () {
       this.loadData()
+      if (typeof this.$refs.upload !== 'undefined') {
+        this.$refs.upload.clearFiles()
+      }
     },
 
     term () {
@@ -114,9 +130,27 @@ export default {
   },
 
   methods: {
+    doExport () {
+      api.res
+        .get({term: this.term, per_page: 1000, as_csv: true})
+        .then((res) => {
+          download(res.data.csv, 'entries.csv', 'text/csv')
+        })
+    },
+
     pageChange (page) {
       this.page = page
       this.loadData()
+    },
+
+    handleUploadSuccess () {
+      this.loadData()
+      this.showClearBtn = true
+    },
+
+    clearImport () {
+      this.$refs.upload.clearFiles()
+      this.showClearBtn = false
     },
 
     loadData () {
@@ -198,6 +232,14 @@ export default {
     margin-left: auto;
   }
 
+  .upload-btn {
+    position: relative;
+  }
+
+  .upload-btn > * {
+    display: inline-block;
+  }
+
   .buttons > * {
     margin-left: 10px !important;
     display: inline-block;
@@ -206,9 +248,11 @@ export default {
   .buttons .el-upload-list {
     position: absolute;
     background: #FFF;
-    z-index: 3;
+    z-index: 10001;
     border-radius: 5px;
     margin-top: 5px;
+    right: 0;
+    border: 1px solid #CCC;
   }
 
   .buttons .el-upload-list__item:first-child {

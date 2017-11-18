@@ -22,6 +22,7 @@ import Select from './fields/Select.vue'
 import CrudBoolean from './fields/Boolean.vue'
 import RemoteSelect from './fields/RemoteSelect.vue'
 import ImageUpload from './fields/ImageUpload.vue'
+import Image from './fields/Image.vue'
 import Order from './Order.vue'
 import api from '../libs/api'
 
@@ -42,6 +43,7 @@ export default {
     'v-crud-boolean': CrudBoolean,
     'v-crud-remote-select': RemoteSelect,
     'v-crud-image-upload': ImageUpload,
+    'v-crud-image': Image,
     'order': Order
   },
 
