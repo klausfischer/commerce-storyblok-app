@@ -15,6 +15,7 @@
             ref="upload"
             :action="importEndpoint"
             :headers="rootConfig.headers"
+            :before-upload="beforeUpload"
             :show-file-list="true"
             :multiple="true"
             :on-success="handleUploadSuccess"
@@ -102,7 +103,8 @@ export default {
       page: 1,
       loading: false,
       term: '',
-      showClearBtn: false
+      showClearBtn: false,
+      throttleCount: 0
     }
   },
 
@@ -114,7 +116,7 @@ export default {
     model () {
       this.loadData()
       if (typeof this.$refs.upload !== 'undefined') {
-        this.$refs.upload.clearFiles()
+        this.clearImport()
       }
     },
 
@@ -138,6 +140,13 @@ export default {
         })
     },
 
+    beforeUpload () {
+      return new Promise(resolve => {
+        setTimeout(resolve, this.throttleCount * 100)
+        this.throttleCount = this.throttleCount + 1
+      })
+    },
+
     pageChange (page) {
       this.page = page
       this.loadData()
@@ -151,6 +160,7 @@ export default {
     clearImport () {
       this.$refs.upload.clearFiles()
       this.showClearBtn = false
+      this.throttleCount = 0
     },
 
     loadData () {
