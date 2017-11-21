@@ -19,7 +19,8 @@
             :show-file-list="true"
             :multiple="true"
             :on-success="handleUploadSuccess"
-            v-if="config.import">
+            v-if="config.import"
+            v-loading="uploading">
             <el-button slot="trigger">Import</el-button>
           </el-upload>
           <el-button @click="clearImport" v-if="showClearBtn">Clear</el-button>
@@ -104,7 +105,8 @@ export default {
       loading: false,
       term: '',
       showClearBtn: false,
-      throttleCount: 0
+      throttleCount: 0,
+      uploading: false
     }
   },
 
@@ -141,6 +143,8 @@ export default {
     },
 
     beforeUpload () {
+      this.uploading = true
+
       return new Promise(resolve => {
         setTimeout(resolve, this.throttleCount * 100)
         this.throttleCount = this.throttleCount + 1
@@ -155,6 +159,7 @@ export default {
     handleUploadSuccess () {
       this.loadData()
       this.showClearBtn = true
+      this.uploading = false
     },
 
     clearImport () {
