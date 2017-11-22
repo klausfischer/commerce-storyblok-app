@@ -277,6 +277,11 @@ export default {
               name: 'name'
             },
             {
+              component: 'el-input',
+              label: 'Access code',
+              name: 'access_code'
+            },
+            {
               component: 'v-crud-remote-select',
               label: 'Pricelist',
               name: 'pricelist_id',
