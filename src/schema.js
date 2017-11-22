@@ -263,6 +263,83 @@ export default {
     },
     {
       component: 'v-crud',
+      resource: 'prices/{id}',
+      route: 'prices',
+      import: 'prices',
+      name: 'Prices',
+      formFields: [
+        {
+          component: 'el-tab',
+          label: 'Details',
+          fields: [
+            {
+              component: 'v-crud-remote-select',
+              label: 'Product',
+              name: 'product_id',
+              options: {
+                resource: 'products/{id}',
+                multiple: false,
+                searchKey: 'sku'
+              }
+            },
+            {
+              component: 'el-input',
+              label: 'Price',
+              name: 'price'
+            },
+            {
+              component: 'el-input',
+              label: 'Saleprice',
+              name: 'saleprice'
+            },
+            {
+              component: 'el-input',
+              label: 'Currency',
+              name: 'currency'
+            },
+            {
+              component: 'v-crud-remote-select',
+              label: 'Pricelist',
+              name: 'pricelist_id',
+              options: {
+                resource: 'pricelists/{id}',
+                multiple: false,
+                searchKey: 'name'
+              }
+            }
+          ]
+        }
+      ],
+      columns: [
+        {
+          component: 'simple-text',
+          label: 'Product ID',
+          property: 'product_id'
+        },
+        {
+          component: 'simple-text',
+          label: 'Pricelist',
+          property: 'pricelist_id'
+        },
+        {
+          component: 'simple-text',
+          label: 'Currency',
+          property: 'currency'
+        },
+        {
+          component: 'simple-text',
+          label: 'Price',
+          property: 'price'
+        },
+        {
+          component: 'simple-text',
+          label: 'Saleprice',
+          property: 'saleprice'
+        }
+      ]
+    },
+    {
+      component: 'v-crud',
       resource: 'customer_groups/{id}',
       route: 'customer_groups',
       name: 'Customer Groups',
@@ -389,7 +466,7 @@ export default {
       resource: 'products/{id}',
       import: 'products',
       route: 'products',
-      name: 'Product Import',
+      name: 'Products',
       formFields: [
         {
           component: 'el-tab',

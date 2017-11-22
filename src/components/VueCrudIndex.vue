@@ -19,6 +19,7 @@
             :show-file-list="true"
             :multiple="true"
             :on-success="handleUploadSuccess"
+            :on-error="handleUploadError"
             v-if="config.import"
             v-loading="uploading">
             <el-button slot="trigger">Import</el-button>
@@ -160,6 +161,10 @@ export default {
       this.loadData()
       this.showClearBtn = true
       this.uploading = false
+    },
+
+    handleUploadError () {
+      this.handleUploadSuccess()
     },
 
     clearImport () {
