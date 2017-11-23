@@ -367,6 +367,16 @@ export default {
                 multiple: false,
                 searchKey: 'name'
               }
+            },
+            {
+              component: 'v-crud-remote-select',
+              label: 'Category',
+              name: 'category_id',
+              options: {
+                resource: 'categories/{id}',
+                multiple: false,
+                searchKey: 'name'
+              }
             }
           ]
         }
