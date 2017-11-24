@@ -391,6 +391,42 @@ export default {
     },
     {
       component: 'v-crud',
+      resource: 'origins/{id}',
+      route: 'origins',
+      name: 'Origins',
+      formFields: [
+        {
+          component: 'el-tab',
+          label: 'Details',
+          fields: [
+            {
+              component: 'el-input',
+              label: 'Name',
+              name: 'name'
+            },
+            {
+              component: 'el-input',
+              label: 'Email',
+              name: 'email'
+            }
+          ]
+        }
+      ],
+      columns: [
+        {
+          component: 'simple-text',
+          label: 'Name',
+          property: 'name'
+        },
+        {
+          component: 'simple-text',
+          label: 'Email',
+          property: 'email'
+        }
+      ]
+    },
+    {
+      component: 'v-crud',
       resource: 'canned_messages/{id}',
       route: 'canned_messages',
       name: 'Emails',
