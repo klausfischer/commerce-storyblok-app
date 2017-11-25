@@ -234,7 +234,116 @@ export default {
       ]
     }
   ],
-  settings: [
+  customers: [
+    {
+      component: 'v-crud',
+      resource: 'customers/{id}',
+      route: 'customers',
+      exportable: true,
+      hideCreate: true,
+      name: 'Customers',
+      formFields: [
+        {
+          component: 'el-tab',
+          label: 'Details',
+          fields: [
+            {
+              component: 'el-input',
+              label: 'Firstname',
+              name: 'firstname'
+            },
+            {
+              component: 'el-input',
+              label: 'Lastname',
+              name: 'lastname'
+            },
+            {
+              component: 'el-input',
+              label: 'Company',
+              name: 'company'
+            },
+            {
+              component: 'el-input',
+              label: 'Email',
+              name: 'email'
+            }
+          ]
+        }
+      ],
+      columns: [
+        {
+          component: 'simple-text',
+          label: 'Email',
+          property: 'email'
+        },
+        {
+          component: 'simple-text',
+          label: 'Firstname',
+          property: 'firstname'
+        },
+        {
+          component: 'simple-text',
+          label: 'Lastname',
+          property: 'lastname'
+        },
+        {
+          component: 'simple-text',
+          label: 'Company',
+          property: 'company'
+        }
+      ]
+    },
+    {
+      component: 'v-crud',
+      resource: 'customer_groups/{id}',
+      route: 'customer_groups',
+      name: 'Customer Groups',
+      formFields: [
+        {
+          component: 'el-tab',
+          label: 'Details',
+          fields: [
+            {
+              component: 'el-input',
+              label: 'Name',
+              name: 'name'
+            },
+            {
+              component: 'el-input',
+              label: 'Access code',
+              name: 'access_code'
+            },
+            {
+              component: 'v-crud-remote-select',
+              label: 'Pricelist',
+              name: 'pricelist_id',
+              options: {
+                resource: 'pricelists/{id}',
+                multiple: false,
+                searchKey: 'name'
+              }
+            },
+            {
+              component: 'v-crud-remote-select',
+              label: 'Category',
+              name: 'category_id',
+              options: {
+                resource: 'categories/{id}',
+                multiple: false,
+                searchKey: 'name'
+              }
+            }
+          ]
+        }
+      ],
+      columns: [
+        {
+          component: 'simple-text',
+          label: 'Name',
+          property: 'name'
+        }
+      ]
+    },
     {
       component: 'v-crud',
       resource: 'pricelists/{id}',
@@ -337,12 +446,15 @@ export default {
           property: 'saleprice'
         }
       ]
-    },
+    }
+  ],
+  import: [
     {
       component: 'v-crud',
-      resource: 'customer_groups/{id}',
-      route: 'customer_groups',
-      name: 'Customer Groups',
+      resource: 'products/{id}',
+      import: 'products',
+      route: 'products',
+      name: 'Products',
       formFields: [
         {
           component: 'el-tab',
@@ -350,33 +462,13 @@ export default {
           fields: [
             {
               component: 'el-input',
-              label: 'Name',
-              name: 'name'
+              label: 'SKU',
+              name: 'sku'
             },
             {
               component: 'el-input',
-              label: 'Access code',
-              name: 'access_code'
-            },
-            {
-              component: 'v-crud-remote-select',
-              label: 'Pricelist',
-              name: 'pricelist_id',
-              options: {
-                resource: 'pricelists/{id}',
-                multiple: false,
-                searchKey: 'name'
-              }
-            },
-            {
-              component: 'v-crud-remote-select',
-              label: 'Category',
-              name: 'category_id',
-              options: {
-                resource: 'categories/{id}',
-                multiple: false,
-                searchKey: 'name'
-              }
+              label: 'Name',
+              name: 'name'
             }
           ]
         }
@@ -384,47 +476,46 @@ export default {
       columns: [
         {
           component: 'simple-text',
-          label: 'Name',
-          property: 'name'
-        }
-      ]
-    },
-    {
-      component: 'v-crud',
-      resource: 'origins/{id}',
-      route: 'origins',
-      name: 'Origins',
-      formFields: [
-        {
-          component: 'el-tab',
-          label: 'Details',
-          fields: [
-            {
-              component: 'el-input',
-              label: 'Name',
-              name: 'name'
-            },
-            {
-              component: 'el-input',
-              label: 'Email',
-              name: 'email'
-            }
-          ]
-        }
-      ],
-      columns: [
-        {
-          component: 'simple-text',
-          label: 'Name',
-          property: 'name'
+          label: 'SKU',
+          property: 'sku'
         },
         {
           component: 'simple-text',
-          label: 'Email',
-          property: 'email'
+          label: 'Name',
+          property: 'name'
         }
       ]
     },
+    {
+      component: 'v-crud',
+      resource: 'assets/{id}',
+      import: 'assets',
+      route: 'assets',
+      hideCreate: true,
+      name: 'Assets',
+      formFields: [
+        {
+          component: 'el-tab',
+          label: 'Details',
+          fields: [
+            {
+              component: 'v-crud-image',
+              label: 'Filename',
+              name: 'filename'
+            }
+          ]
+        }
+      ],
+      columns: [
+        {
+          component: 'simple-text',
+          label: 'Filename',
+          property: 'filename'
+        }
+      ]
+    }
+  ],
+  settings: [
     {
       component: 'v-crud',
       resource: 'canned_messages/{id}',
@@ -504,129 +595,6 @@ export default {
           component: 'simple-text',
           label: 'Name',
           property: 'name'
-        }
-      ]
-    },
-    {
-      component: 'v-crud',
-      resource: 'products/{id}',
-      import: 'products',
-      route: 'products',
-      name: 'Products',
-      formFields: [
-        {
-          component: 'el-tab',
-          label: 'Details',
-          fields: [
-            {
-              component: 'el-input',
-              label: 'SKU',
-              name: 'sku'
-            },
-            {
-              component: 'el-input',
-              label: 'Name',
-              name: 'name'
-            }
-          ]
-        }
-      ],
-      columns: [
-        {
-          component: 'simple-text',
-          label: 'SKU',
-          property: 'sku'
-        },
-        {
-          component: 'simple-text',
-          label: 'Name',
-          property: 'name'
-        }
-      ]
-    },
-    {
-      component: 'v-crud',
-      resource: 'assets/{id}',
-      import: 'assets',
-      route: 'assets',
-      hideCreate: true,
-      name: 'Assets',
-      formFields: [
-        {
-          component: 'el-tab',
-          label: 'Details',
-          fields: [
-            {
-              component: 'v-crud-image',
-              label: 'Filename',
-              name: 'filename'
-            }
-          ]
-        }
-      ],
-      columns: [
-        {
-          component: 'simple-text',
-          label: 'Filename',
-          property: 'filename'
-        }
-      ]
-    },
-    {
-      component: 'v-crud',
-      resource: 'customers/{id}',
-      route: 'customers',
-      exportable: true,
-      hideCreate: true,
-      name: 'Customers',
-      formFields: [
-        {
-          component: 'el-tab',
-          label: 'Details',
-          fields: [
-            {
-              component: 'el-input',
-              label: 'Firstname',
-              name: 'firstname'
-            },
-            {
-              component: 'el-input',
-              label: 'Lastname',
-              name: 'lastname'
-            },
-            {
-              component: 'el-input',
-              label: 'Company',
-              name: 'company'
-            },
-            {
-              component: 'el-input',
-              label: 'Email',
-              name: 'email'
-            }
-          ]
-        }
-      ],
-      columns: [
-        {
-          component: 'simple-text',
-          label: 'Email',
-          property: 'email'
-        },
-        {
-          component: 'simple-text',
-          label: 'Firstname',
-          property: 'firstname'
-        },
-        {
-          component: 'simple-text',
-          label: 'Lastname',
-          property: 'lastname'
-        },
-        {
-          component: 'simple-text',
-          label: 'Company',
-          property: 'company'
         }
       ]
     }
