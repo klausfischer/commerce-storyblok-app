@@ -518,6 +518,46 @@ export default {
   settings: [
     {
       component: 'v-crud',
+      resource: 'site_countries/{id}',
+      route: 'site_countries',
+      name: 'Countries',
+      formFields: [
+        {
+          component: 'el-tab',
+          label: 'Details',
+          fields: [
+            {
+              component: 'v-crud-remote-select',
+              label: 'Country ID',
+              name: 'country_id',
+              options: {
+                resource: 'countries/{id}',
+                multiple: false
+              }
+            },
+            {
+              component: 'v-crud-boolean',
+              label: 'Status',
+              name: 'status'
+            },
+            {
+              component: 'el-input',
+              label: 'Tax Rate',
+              name: 'tax'
+            }
+          ]
+        }
+      ],
+      columns: [
+        {
+          component: 'simple-text',
+          label: 'Name',
+          property: 'name'
+        }
+      ]
+    },
+    {
+      component: 'v-crud',
       resource: 'canned_messages/{id}',
       route: 'canned_messages',
       name: 'Emails',
@@ -560,32 +600,28 @@ export default {
     },
     {
       component: 'v-crud',
-      resource: 'site_countries/{id}',
-      route: 'site_countries',
-      name: 'Countries',
+      resource: 'settings/{id}',
+      route: 'settings',
+      name: 'All Settings',
       formFields: [
         {
           component: 'el-tab',
           label: 'Details',
           fields: [
             {
-              component: 'v-crud-remote-select',
-              label: 'Country ID',
-              name: 'country_id',
-              options: {
-                resource: 'countries/{id}',
-                multiple: false
-              }
-            },
-            {
-              component: 'v-crud-boolean',
-              label: 'Status',
-              name: 'status'
+              component: 'el-input',
+              label: 'Group',
+              name: 'code'
             },
             {
               component: 'el-input',
-              label: 'Tax Rate',
-              name: 'tax'
+              label: 'Setting key',
+              name: 'setting_key'
+            },
+            {
+              component: 'el-input',
+              label: 'Setting',
+              name: 'setting'
             }
           ]
         }
@@ -593,8 +629,13 @@ export default {
       columns: [
         {
           component: 'simple-text',
-          label: 'Name',
-          property: 'name'
+          label: 'Group',
+          property: 'code'
+        },
+        {
+          component: 'simple-text',
+          label: 'Setting key',
+          property: 'setting_key'
         }
       ]
     }

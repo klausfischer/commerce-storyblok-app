@@ -62,7 +62,7 @@ export default {
 
   created () {
     this.api = this.$resource(
-      this.rootConfig.endPoint + '/settings/{id}', {}, {}, {headers: this.rootConfig.headers})
+      this.rootConfig.endPoint + '/bulk_settings/{id}', {}, {}, {headers: this.rootConfig.headers})
 
     this.api
       .get({id: 'mine'})
