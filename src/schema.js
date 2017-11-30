@@ -165,11 +165,11 @@ export default {
               component: 'v-crud-remote-select',
               label: 'Product',
               name: 'product_id',
-              options: {
+              options: [{
                 resource: 'products/{id}',
                 multiple: false,
                 searchKey: 'sku'
-              }
+              }]
             },
             {
               component: 'v-crud-boolean',
@@ -196,11 +196,11 @@ export default {
               component: 'v-crud-remote-select',
               label: 'Customer',
               name: 'customer_id',
-              options: {
+              options: [{
                 resource: 'customers/{id}',
                 multiple: false,
                 searchKey: 'email'
-              }
+              }]
             },
             {
               component: 'el-input',
@@ -317,21 +317,21 @@ export default {
               component: 'v-crud-remote-select',
               label: 'Pricelist',
               name: 'pricelist_id',
-              options: {
+              options: [{
                 resource: 'pricelists/{id}',
                 multiple: false,
                 searchKey: 'name'
-              }
+              }]
             },
             {
               component: 'v-crud-remote-select',
               label: 'Category',
               name: 'category_id',
-              options: {
+              options: [{
                 resource: 'categories/{id}',
                 multiple: false,
                 searchKey: 'name'
-              }
+              }]
             }
           ]
         }
@@ -385,11 +385,11 @@ export default {
               component: 'v-crud-remote-select',
               label: 'Product',
               name: 'product_id',
-              options: {
+              options: [{
                 resource: 'products/{id}',
                 multiple: false,
                 searchKey: 'sku'
-              }
+              }]
             },
             {
               component: 'el-input',
@@ -410,11 +410,11 @@ export default {
               component: 'v-crud-remote-select',
               label: 'Pricelist',
               name: 'pricelist_id',
-              options: {
+              options: [{
                 resource: 'pricelists/{id}',
                 multiple: false,
                 searchKey: 'name'
-              }
+              }]
             }
           ]
         }
@@ -530,10 +530,10 @@ export default {
               component: 'v-crud-remote-select',
               label: 'Country ID',
               name: 'country_id',
-              options: {
+              options: [{
                 resource: 'countries/{id}',
                 multiple: false
-              }
+              }]
             },
             {
               component: 'v-crud-boolean',
@@ -586,6 +586,37 @@ export default {
               label: 'Body',
               type: 'textarea',
               name: 'content'
+            }
+          ]
+        }
+      ],
+      columns: [
+        {
+          component: 'simple-text',
+          label: 'Name',
+          property: 'name'
+        }
+      ]
+    },
+    {
+      component: 'v-crud',
+      resource: 'origins/{id}',
+      route: 'origins',
+      name: 'Origins',
+      formFields: [
+        {
+          component: 'el-tab',
+          label: 'Details',
+          fields: [
+            {
+              component: 'el-input',
+              label: 'Name',
+              name: 'name'
+            },
+            {
+              component: 'el-input',
+              label: 'Owner email',
+              name: 'email'
             }
           ]
         }

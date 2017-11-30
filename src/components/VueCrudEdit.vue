@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import Radio from './fields/Radio.vue'
 import Select from './fields/Select.vue'
 import CrudBoolean from './fields/Boolean.vue'
 import RemoteSelect from './fields/RemoteSelect.vue'
@@ -39,6 +40,7 @@ export default {
   },
 
   components: {
+    'v-crud-radio': Radio,
     'v-crud-select': Select,
     'v-crud-boolean': CrudBoolean,
     'v-crud-remote-select': RemoteSelect,

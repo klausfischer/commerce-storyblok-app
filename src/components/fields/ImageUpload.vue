@@ -1,13 +1,33 @@
 <template>
-  <el-upload
-    :file-list="fileList"
-    :http-request="doUpload"
-    :multiple="true"
-    :on-remove="handleRemove"
-    list-type="picture">
-    <el-button size="small" type="primary">Click to upload</el-button>
-    <div slot="tip" class="el-upload__tip">jpg/png files with a size less than 5000kb</div>
-  </el-upload>
+  <div>
+    <ul class="el-upload-list el-upload-list--picture">
+      <li class="el-upload-list__item" v-for="file in fileList">
+        <a :href="imgService + file.filename" target="_blank">
+        <img
+          class="el-upload-list__item-thumbnail"
+          :src="imgService + file.filename" alt="">
+        </a>
+        <a class="el-upload-list__item-name">
+          <el-button @click.prevent="handleDelete(file)">Delete</el-button>
+        </a>
+      </li>
+    </ul>
+    <el-upload
+      ref="imageupload"
+      :action="importEndpoint"
+      :headers="rootConfig.headers"
+      :before-upload="beforeUpload"
+      :show-file-list="false"
+      :multiple="true"
+      :on-success="handleUploadSuccess"
+      :on-error="handleUploadError"
+      :on-change="handleChange"
+      list-type="picture">
+
+      <el-button size="small" type="primary">Click to upload</el-button>
+      <div slot="tip" class="el-upload__tip">jpg/png files with a size less than 5000kb</div>
+    </el-upload>
+  </div>
 </template>
 
 <script>
@@ -15,20 +35,46 @@ import api from '../../libs/api'
 
 export default {
   name: 'v-crud-image-upload',
-  props: ['placeholder', 'value', 'rootModel'],
+  props: ['placeholder', 'value', 'rootModel', 'rootConfig'],
   methods: {
     updateValue (v) {
+      let fileList = []
+      v.forEach((file) => {
+        file.filename = file.filename.replace('http://assets.storeblok.com/', '')
+        fileList.push(file)
+      })
       this.$emit('input', v)
     },
 
-    handleSuccess (res) {
-      this.fileList.push({name: res.body.filename, url: this.imgService + res.body.filename})
-      this.updateValue(this.cleanedFileList)
+    handleRemove (file) {
+
     },
 
-    handleRemove (file, fileList) {
-      this.fileList = fileList
-      this.updateValue(this.cleanedFileList)
+    beforeUpload () {
+      return new Promise(resolve => {
+        setTimeout(resolve, this.throttleCount * 100)
+        this.throttleCount = this.throttleCount + 1
+      })
+    },
+
+    handleUploadSuccess (res) {
+      this.fileList.push({filename: res.filename, primary: 0})
+      this.updateValue(this.fileList)
+    },
+
+    handleUploadError () {
+
+    },
+
+    handleDelete (file) {
+      this.fileList = this.fileList.filter((fileListItem) => {
+        return file.filename !== fileListItem.filename
+      })
+      this.updateValue(this.fileList)
+    },
+
+    handleChange (file, fileList) {
+      console.log(fileList)
     },
 
     doUpload (xhr) {
@@ -38,34 +84,18 @@ export default {
           .then(this.handleSuccess)
           .catch(api.errorHandler)
       })
-    },
-
-    saveBase64 (file, cb) {
-      var fd = new FileReader()
-
-      fd.onloadend = () => {
-        cb(fd.result)
-      }
-
-      fd.readAsDataURL(file)
     }
   },
 
   computed: {
-    cleanedFileList () {
-      let fileList = []
-
-      this.fileList.forEach((file) => {
-        fileList.push({filename: file.name, primary: 0})
-      })
-
-      return fileList
+    importEndpoint () {
+      return this.rootConfig.endPoint + '/assets'
     }
   },
 
   data () {
     return {
-      imgService: 'https://img2.storyblok.com/100x100/',
+      imgService: 'http://assets.storeblok.com/',
       fileList: []
     }
   },
@@ -81,7 +111,8 @@ export default {
         let fileList = []
 
         value.forEach((file) => {
-          fileList.push({name: file.filename, url: this.imgService + file.filename})
+          file.filename = file.filename.replace(new RegExp('http://assets.storeblok.com/', 'g'), '')
+          fileList.push(file)
         })
 
         this.fileList = fileList

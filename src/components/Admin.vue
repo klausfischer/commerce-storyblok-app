@@ -32,7 +32,8 @@ export default {
         endPoint: endPoint,
         headers: {},
         body: schema.body
-      }
+      },
+      firstRedirect: true
     }
   },
 
@@ -52,35 +53,15 @@ export default {
 
   created () {
     let group = params('group')
-    this.config.body = schema[group] || schema.default
-    let first = this.config.body[0]
-    this.$router.push({name: 'admin', params: {model: first.route, id: 'all', action: 'index'}})
-
-    if (params('storeblok')) {
-      let url = 'https://' + params('storeblok') + '.storeblok.com/admin/users/get_api_provision'
-      if (local) {
-        url = 'http://' + params('storeblok') + '.localhost.com/admin/users/get_api_provision'
-      }
-      let api = this.$resource(
-        url, {}, {}, {credentials: true})
-
-      api.get()
-        .then((res) => {
-          this.config.headers['Authorization'] = res.body.access_token
-          this.loading = false
-          this.stripeRedirect()
-        })
-    } else if (local) {
-      this.config.headers['Authorization'] = 'Token token=3a9073a24d131fd3380d0d4a6c0ba7d3'
-      this.loading = false
-      this.stripeRedirect()
+    if (params('_storyblok')) {
+      this.loadConfig()
     } else {
-      window.storyblok.getSession((data) => {
-        this.config.headers['Authorization'] = data.session.access_token
-        this.loading = false
-        this.stripeRedirect()
-      })
+      this.config.body = schema[group] || schema.default
+      this.initRoute()
+      this.firstRedirect = false
     }
+
+    this.registerStoryblok()
   },
 
   components: {
@@ -89,6 +70,67 @@ export default {
   },
 
   methods: {
+    loadConfig () {
+      let stories = this.$resource('https://api.storyblok.com/v1/cdn/stories/{id}')
+      stories.get({id: params('_storyblok'), token: 'LuOkra0UmAAm1mvux2XX7Att', version: 'draft'})
+        .then((res) => {
+          this.config.body = res.body.story.content.body
+          this.initRoute()
+          this.firstRedirect = false
+        })
+    },
+
+    registerStoryblok () {
+      window.storyblok.init()
+
+      window.storyblok.on('change', () => {
+        this.loadConfig()
+      })
+
+      window.storyblok.on('published', () => {
+        this.loadConfig()
+      })
+
+      window.storyblok.pingEditor(function () {
+        if (window.storyblok.inEditor) {
+          window.storyblok.enterEditmode()
+        }
+      })
+    },
+
+    initRoute () {
+      let first = this.config.body[0]
+      if (this.firstRedirect) {
+        this.$router.push({name: 'admin', params: {model: first.route, id: 'all', action: 'index'}})
+      }
+
+      if (params('storeblok')) {
+        let url = 'https://' + params('storeblok') + '.storeblok.com/admin/users/get_api_provision'
+        if (local) {
+          url = 'http://' + params('storeblok') + '.localhost.com/admin/users/get_api_provision'
+        }
+        let api = this.$resource(
+          url, {}, {}, {credentials: true})
+
+        api.get()
+          .then((res) => {
+            this.config.headers['Authorization'] = res.body.access_token
+            this.loading = false
+            this.stripeRedirect()
+          })
+      } else if (local) {
+        this.config.headers['Authorization'] = 'Token token=3a9073a24d131fd3380d0d4a6c0ba7d3'
+        this.loading = false
+        this.stripeRedirect()
+      } else {
+        window.storyblok.getSession((data) => {
+          this.config.headers['Authorization'] = data.session.access_token
+          this.loading = false
+          this.stripeRedirect()
+        })
+      }
+    },
+
     stripeRedirect () {
       if (window.location.search.indexOf('?stripe_connected=1') > -1) {
         this.$router.push({name: 'admin', params: {model: 'settings', id: 'all', action: 'index'}})
