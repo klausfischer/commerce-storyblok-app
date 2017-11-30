@@ -266,6 +266,16 @@ export default {
               component: 'el-input',
               label: 'Email',
               name: 'email'
+            },
+            {
+              component: 'v-crud-remote-select',
+              label: 'Origin',
+              name: 'origin_id',
+              options: [{
+                resource: 'origins/{id}',
+                multiple: false,
+                searchKey: 'name'
+              }]
             }
           ]
         }
