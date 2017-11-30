@@ -22,6 +22,7 @@ import Radio from './fields/Radio.vue'
 import Select from './fields/Select.vue'
 import CrudBoolean from './fields/Boolean.vue'
 import RemoteSelect from './fields/RemoteSelect.vue'
+import MailPreview from './fields/MailPreview.vue'
 import ImageUpload from './fields/ImageUpload.vue'
 import Image from './fields/Image.vue'
 import Order from './Order.vue'
@@ -45,6 +46,7 @@ export default {
     'v-crud-boolean': CrudBoolean,
     'v-crud-remote-select': RemoteSelect,
     'v-crud-image-upload': ImageUpload,
+    'v-crud-mail-preview': MailPreview,
     'v-crud-image': Image,
     'order': Order
   },

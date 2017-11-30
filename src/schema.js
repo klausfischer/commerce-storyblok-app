@@ -588,6 +588,17 @@ export default {
               name: 'content'
             }
           ]
+        },
+        {
+          component: 'el-tab',
+          label: 'Preview',
+          fields: [
+            {
+              component: 'v-crud-mail-preview',
+              name: 'trigger',
+              label: 'Preview'
+            }
+          ]
         }
       ],
       columns: [
