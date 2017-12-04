@@ -690,6 +690,50 @@ export default {
           property: 'setting_key'
         }
       ]
+    },
+    {
+      name: 'Logs',
+      route: 'logs',
+      columns: [
+        {
+          label: 'Time',
+          property: 'created_at',
+          component: 'date-time'
+        },
+        {
+          label: 'Event',
+          property: 'event',
+          component: 'simple-text'
+        },
+        {
+          label: 'Item',
+          property: 'item_type',
+          component: 'simple-text'
+        },
+        {
+          label: 'Item Id',
+          property: 'item_id',
+          component: 'simple-text'
+        },
+        {
+          label: 'IP',
+          property: 'ip',
+          component: 'simple-text'
+        }
+      ],
+      resource: 'versions/{id}',
+      component: 'v-crud',
+      exportable: false,
+      formFields: [
+        {
+          body: [],
+          label: 'Details',
+          fields: [],
+          component: 'el-tab'
+        }
+      ],
+      hideCreate: true,
+      hideActionBar: false
     }
   ]
 }
