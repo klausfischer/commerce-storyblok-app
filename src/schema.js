@@ -596,6 +596,16 @@ export default {
               label: 'Body',
               type: 'textarea',
               name: 'content'
+            },
+            {
+              component: 'el-input',
+              label: 'Mapping',
+              name: 'mapping'
+            },
+            {
+              component: 'el-input',
+              label: 'Type',
+              name: 'type'
             }
           ]
         },
