@@ -479,6 +479,11 @@ export default {
               component: 'el-input',
               label: 'Name',
               name: 'name'
+            },
+            {
+              component: 'el-input',
+              label: 'Sales',
+              name: 'sales'
             }
           ]
         }
