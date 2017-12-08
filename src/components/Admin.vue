@@ -31,7 +31,7 @@ export default {
         component: 'v-admin',
         endPoint: endPoint,
         headers: {},
-        body: schema.body
+        body: {}
       },
       firstRedirect: true
     }
@@ -55,13 +55,12 @@ export default {
     let group = params('group')
     if (params('_storyblok')) {
       this.loadConfig()
+      this.registerStoryblok()
     } else {
       this.config.body = schema[group] || schema.default
       this.initRoute()
       this.firstRedirect = false
     }
-
-    this.registerStoryblok()
   },
 
   components: {
