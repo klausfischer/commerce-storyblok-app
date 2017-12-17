@@ -175,13 +175,13 @@ export default {
     },
 
     handleUploadError (res) {
+      this.handleUploadSuccess()
+
       let response = {
         status: res.status,
         body: JSON.parse(res.message.substr(4))
       }
-
       api.errorHandler.call(this, response)
-      this.handleUploadSuccess()
     },
 
     clearImport () {
