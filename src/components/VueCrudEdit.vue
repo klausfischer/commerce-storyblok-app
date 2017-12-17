@@ -1,8 +1,8 @@
 <template>
   <el-form v-loading="loading" ref="form" :model="model" label-width="120px">
-    <el-tabs>
+    <el-tabs v-model="activeTab">
       <el-tab-pane :key="tab.label" v-for="tab in config.formFields" :label="tab.label">
-        <div :model="model" :is="item.component" v-for="item in tab.body"></div>
+        <div :model="model" :config="item" :root-config="rootConfig" :is="item.component" :options="item.options" v-for="item in tab.body"></div>
 
         <el-form-item :key="field.name" :label="field.label" v-for="field in tab.fields">
           <div :placeholder="field.placeholder" :root-config="rootConfig" :options="field.options" :type="field.type" :is="field.component" :root-model="model" v-model="model[field.name]"></div>
@@ -18,14 +18,6 @@
 </template>
 
 <script>
-import Radio from './fields/Radio.vue'
-import Select from './fields/Select.vue'
-import CrudBoolean from './fields/Boolean.vue'
-import RemoteSelect from './fields/RemoteSelect.vue'
-import MailPreview from './fields/MailPreview.vue'
-import ImageUpload from './fields/ImageUpload.vue'
-import Image from './fields/Image.vue'
-import Order from './Order.vue'
 import api from '../libs/api'
 
 export default {
@@ -36,19 +28,15 @@ export default {
   data () {
     return {
       model: {},
+      activeTab: '0',
       loading: false
     }
   },
 
-  components: {
-    'v-crud-radio': Radio,
-    'v-crud-select': Select,
-    'v-crud-boolean': CrudBoolean,
-    'v-crud-remote-select': RemoteSelect,
-    'v-crud-image-upload': ImageUpload,
-    'v-crud-mail-preview': MailPreview,
-    'v-crud-image': Image,
-    'order': Order
+  watch: {
+    '$route.params.model' () {
+      this.loadData()
+    }
   },
 
   mounted () {
@@ -88,6 +76,7 @@ export default {
         this.model = res.body
       }
       this.loading = false
+      this.activeTab = '0'
     }
   }
 }

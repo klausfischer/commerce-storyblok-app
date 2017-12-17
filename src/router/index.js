@@ -4,6 +4,31 @@ import Admin from '@/components/Admin'
 import LoggedOut from '@/components/LoggedOut'
 import VueResource from 'vue-resource'
 import Currency from '../libs/currency'
+import Radio from '@/components/fields/Radio.vue'
+import Select from '@/components/fields/Select.vue'
+import CrudBoolean from '@/components/fields/Boolean.vue'
+import RemoteSelect from '@/components/fields/RemoteSelect.vue'
+import MailPreview from '@/components/fields/MailPreview.vue'
+import ImageUpload from '@/components/fields/ImageUpload.vue'
+import Translations from '@/components/fields/Translations.vue'
+import Image from '@/components/fields/Image.vue'
+import Order from '@/components/Order.vue'
+import Payment from '@/components/Payment.vue'
+import Shipping from '@/components/Shipping.vue'
+import VueCrudTable from '@/components/VueCrudTable.vue'
+
+Vue.component('v-crud-radio', Radio)
+Vue.component('v-crud-select', Select)
+Vue.component('v-crud-boolean', CrudBoolean)
+Vue.component('v-crud-remote-select', RemoteSelect)
+Vue.component('v-crud-image-upload', ImageUpload)
+Vue.component('v-crud-mail-preview', MailPreview)
+Vue.component('v-crud-image', Image)
+Vue.component('v-crud-translations', Translations)
+Vue.component('v-crud-table', VueCrudTable)
+Vue.component('order', Order)
+Vue.component('payment', Payment)
+Vue.component('shipping', Shipping)
 
 Vue.filter('humanize', function (value) {
   if (typeof value === 'undefined') {
@@ -73,13 +98,5 @@ let routerInstance = new Router({
 Vue.http.options.headers = {
   'Authorization': null
 }
-
-Vue.http.interceptors.push(function (request, next) {
-  next(function (response) {
-    if (response.status === 401) {
-      routerInstance.push({name: 'logged_out'})
-    }
-  })
-})
 
 export default routerInstance

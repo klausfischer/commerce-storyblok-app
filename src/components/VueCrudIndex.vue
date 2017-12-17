@@ -10,7 +10,7 @@
             v-model="term">
           </el-input>
         </div>
-        <div class="upload-btn">
+        <div class="upload-btn" v-if="config.import">
           <el-upload
             ref="upload"
             :action="importEndpoint"
@@ -20,7 +20,6 @@
             :multiple="true"
             :on-success="handleUploadSuccess"
             :on-error="handleUploadError"
-            v-if="config.import"
             v-loading="uploading">
             <el-button slot="trigger">Import</el-button>
           </el-upload>
@@ -30,7 +29,7 @@
         <el-button v-if="config.exportable" @click="doExport">
           Export
         </el-button>
-        <el-button v-if="!config.hideCreate" @click="$router.push({name: 'admin', params: {model: model, id: 'all', action: 'new'}})">
+        <el-button v-if="!config.hideCreate" @click="$router.push({name: 'admin', params: {model: config.route, id: 'all', action: 'new'}})">
           New
         </el-button>
       </span>
@@ -87,7 +86,7 @@ import download from '../libs/download'
 export default {
   name: 'v-crud-index',
 
-  props: ['config', 'rootConfig', 'model'],
+  props: ['config', 'rootConfig', 'api'],
 
   components: {
     SimpleText,
@@ -116,7 +115,7 @@ export default {
   },
 
   watch: {
-    model () {
+    'config' () {
       this.loadData()
       if (typeof this.$refs.upload !== 'undefined') {
         this.clearImport()
@@ -131,12 +130,24 @@ export default {
   computed: {
     importEndpoint () {
       return this.rootConfig.endPoint + '/' + this.config.import
+    },
+
+    filter () {
+      if (typeof this.config.filter !== 'undefined' && this.config.filter.length > 0) {
+        return this.config.filter + this.$route.params.id
+      }
+      return ''
+    },
+
+    apiResource () {
+      return this.$resource(
+        this.rootConfig.endPoint + '/' + this.config.resource + this.filter, {}, {}, {headers: this.rootConfig.headers})
     }
   },
 
   methods: {
     doExport () {
-      api.res
+      this.apiResource
         .get({term: this.term, per_page: 1000, as_csv: true})
         .then((res) => {
           download(res.data.csv, 'entries.csv', 'text/csv')
@@ -163,7 +174,13 @@ export default {
       this.uploading = false
     },
 
-    handleUploadError () {
+    handleUploadError (res) {
+      let response = {
+        status: res.status,
+        body: JSON.parse(res.message.substr(4))
+      }
+
+      api.errorHandler.call(this, response)
       this.handleUploadSuccess()
     },
 
@@ -175,7 +192,7 @@ export default {
 
     loadData () {
       this.loading = true
-      api.res
+      this.apiResource
         .get({page: this.page, term: this.term})
         .then(this.setTableData)
         .catch(api.errorHandler)
@@ -214,7 +231,7 @@ export default {
     massDeletion () {
       this.multipleSelection.forEach((item, index) => {
         setTimeout(() => {
-          api.res
+          this.apiResource
             .delete({id: item.id})
             .then(() => {
               this.loadData()

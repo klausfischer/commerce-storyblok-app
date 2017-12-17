@@ -14,6 +14,8 @@
 <script>
 import VueCrud from './VueCrud'
 import Settings from './Settings'
+import Install from './Install'
+import Dashboard from './Dashboard'
 import schema from '../schema'
 import params from '../libs/params'
 const local = window.location.href.indexOf('localhost:') > -1
@@ -65,7 +67,9 @@ export default {
 
   components: {
     'v-crud': VueCrud,
-    'settings': Settings
+    'settings': Settings,
+    'install': Install,
+    'dashboard': Dashboard
   },
 
   methods: {

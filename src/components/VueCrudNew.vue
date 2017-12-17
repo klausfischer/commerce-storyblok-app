@@ -2,8 +2,10 @@
   <el-form ref="form" :model="model" label-width="120px">
     <el-tabs>
       <el-tab-pane :key="tab.label" v-for="tab in config.formFields" :label="tab.label">
+        <div :model="model" :root-config="rootConfig" :is="item.component" :options="item.options" v-for="item in tab.body"></div>
+
         <el-form-item :key="field.name" :label="field.label" v-for="field in tab.fields">
-          <div :placeholder="field.placeholder" :root-config="rootConfig" :options="field.options" :type="field.type" :is="field.component" v-model="model[field.name]"></div>
+          <div :placeholder="field.placeholder" @input="setModel(field.name)" :root-config="rootConfig" :options="field.options" :type="field.type" :is="field.component" v-model="model[field.name]"></div>
         </el-form-item>
       </el-tab-pane>
     </el-tabs>
@@ -15,12 +17,6 @@
 </template>
 
 <script>
-import Radio from './fields/Radio.vue'
-import Select from './fields/Select.vue'
-import CrudBoolean from './fields/Boolean.vue'
-import RemoteSelect from './fields/RemoteSelect.vue'
-import ImageUpload from './fields/ImageUpload.vue'
-import Order from './Order.vue'
 import api from '../libs/api'
 
 export default {
@@ -34,16 +30,12 @@ export default {
     }
   },
 
-  components: {
-    'v-crud-radio': Radio,
-    'v-crud-select': Select,
-    'v-crud-boolean': CrudBoolean,
-    'v-crud-remote-select': RemoteSelect,
-    'v-crud-image-upload': ImageUpload,
-    'order': Order
-  },
-
   methods: {
+    setModel () {
+      if (typeof this.model[name] === 'undefined') {
+        this.model = Object.assign({}, this.model)
+      }
+    },
     onSubmit () {
       let params = {}
 

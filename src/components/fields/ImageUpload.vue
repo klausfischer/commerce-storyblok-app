@@ -38,12 +38,15 @@ export default {
   props: ['placeholder', 'value', 'rootModel', 'rootConfig'],
   methods: {
     updateValue (v) {
-      let fileList = []
       v.forEach((file) => {
         file.filename = file.filename.replace('http://assets.storeblok.com/', '')
-        fileList.push(file)
       })
-      this.$emit('input', v)
+
+      if (this.isSingle) {
+        this.$emit('input', v[0].filename)
+      } else {
+        this.$emit('input', v)
+      }
     },
 
     handleRemove (file) {
@@ -58,7 +61,11 @@ export default {
     },
 
     handleUploadSuccess (res) {
-      this.fileList.push({filename: res.filename, primary: 0})
+      if (this.isSingle) {
+        this.fileList = [{filename: res.filename, primary: 0}]
+      } else {
+        this.fileList.push({filename: res.filename, primary: 0})
+      }
       this.updateValue(this.fileList)
     },
 
@@ -84,12 +91,37 @@ export default {
           .then(this.handleSuccess)
           .catch(api.errorHandler)
       })
+    },
+
+    setFilelist () {
+      if (this.value) {
+        if (this.isSingle) {
+          this.fileList = [{filename: this.value}]
+        } else {
+          let value = this.value
+
+          if (this.value.constructor !== Array) {
+            value = Object.values(this.value)
+          }
+          let fileList = []
+
+          value.forEach((file) => {
+            file.filename = file.filename.replace(new RegExp('http://assets.storeblok.com/', 'g'), '')
+            fileList.push(file)
+          })
+
+          this.fileList = fileList
+        }
+      }
     }
   },
 
   computed: {
     importEndpoint () {
       return this.rootConfig.endPoint + '/assets'
+    },
+    isSingle () {
+      return this.value.constructor === String
     }
   },
 
@@ -100,23 +132,13 @@ export default {
     }
   },
 
+  created () {
+    this.setFilelist()
+  },
+
   watch: {
     value () {
-      if (this.value) {
-        let value = this.value
-
-        if (this.value.constructor !== Array) {
-          value = Object.values(this.value)
-        }
-        let fileList = []
-
-        value.forEach((file) => {
-          file.filename = file.filename.replace(new RegExp('http://assets.storeblok.com/', 'g'), '')
-          fileList.push(file)
-        })
-
-        this.fileList = fileList
-      }
+      this.setFilelist()
     }
   }
 }

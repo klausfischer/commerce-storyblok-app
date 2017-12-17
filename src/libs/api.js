@@ -9,7 +9,13 @@ export default {
 
     if (error.body && error.status !== 500) {
       each(error.body, (item, key) => {
-        errors.push(h('div', item))
+        if (item.constructor === Array) {
+          each(item, (subItem) => {
+            errors.push(h('div', JSON.stringify(subItem)))
+          })
+        } else {
+          errors.push(h('div', item))
+        }
       })
     } else {
       errors.push(h('div', 'Ops something went wrong'))
