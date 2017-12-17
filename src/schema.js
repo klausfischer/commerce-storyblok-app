@@ -346,6 +346,11 @@ export default {
       ],
       columns: [
         {
+          label: 'Updated at',
+          property: 'updated_at',
+          component: 'date-time'
+        },
+        {
           component: 'simple-text',
           label: 'SKU',
           property: 'sku'
