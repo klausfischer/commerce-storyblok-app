@@ -57,7 +57,10 @@ export default {
     let group = params('group')
     if (params('_storyblok')) {
       this.loadConfig()
-      this.registerStoryblok()
+
+      if (local) {
+        this.registerStoryblok()
+      }
     } else {
       this.config.body = schema[group] || schema.default
       this.initRoute()
