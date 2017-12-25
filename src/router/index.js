@@ -13,9 +13,11 @@ import ImageUpload from '@/components/fields/ImageUpload.vue'
 import Translations from '@/components/fields/Translations.vue'
 import Image from '@/components/fields/Image.vue'
 import Order from '@/components/Order.vue'
+import Messages from '@/components/Messages.vue'
 import Payment from '@/components/Payment.vue'
 import Shipping from '@/components/Shipping.vue'
 import VueCrudTable from '@/components/VueCrudTable.vue'
+import Wysiwyg from 'vue-wysiwyg'
 
 Vue.component('v-crud-radio', Radio)
 Vue.component('v-crud-select', Select)
@@ -27,6 +29,7 @@ Vue.component('v-crud-image', Image)
 Vue.component('v-crud-translations', Translations)
 Vue.component('v-crud-table', VueCrudTable)
 Vue.component('order', Order)
+Vue.component('messages', Messages)
 Vue.component('payment', Payment)
 Vue.component('shipping', Shipping)
 
@@ -66,6 +69,12 @@ Vue.filter('date', function (date, format) {
 
 Vue.use(VueResource)
 Vue.use(Router)
+Vue.use(Wysiwyg, {
+  hideModules: {
+    image: true,
+    table: true
+  }
+})
 
 let routerInstance = new Router({
   routes: [

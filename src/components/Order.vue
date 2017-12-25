@@ -7,10 +7,11 @@
 
     <el-row :gutter="30">
       <el-col :xs="24" :sm="16">
-        <div v-if="hasSku">
+        <div v-if="model.order_items">
           <el-table
             :data="model.order_items"
             stripe
+            v-if="hasSku"
             style="width: 100%">
             <el-table-column
               prop="meta_data"
@@ -23,8 +24,7 @@
             </el-table-column>
             <el-table-column
               prop="sku"
-              label="SKU"
-              width="180">
+              label="SKU">
             </el-table-column>
             <el-table-column
               prop="price"
@@ -33,7 +33,7 @@
             <el-table-column
               prop="quantity"
               label="Quantity"
-              width="180">
+              width="120">
             </el-table-column>
             <el-table-column
               prop="total_price"
@@ -41,12 +41,11 @@
               width="180">
             </el-table-column>
           </el-table>
-        </div>
-        <div v-else>
           <el-table
             :data="model.order_items"
             stripe
-            style="width: 100%">
+            style="width: 100%"
+            v-if="!hasSku">
             <el-table-column
               prop="meta_data"
               label="Product Info">
@@ -70,10 +69,6 @@
               label="Total"
               width="180">
             </el-table-column>
-
-            <div slot="append">
-              test
-            </div>
           </el-table>
         </div>
 

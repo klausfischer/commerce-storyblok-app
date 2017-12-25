@@ -22,6 +22,11 @@ export default {
     font-weight: 600;
   }
 
+  .editr {
+    background: #FFF;
+    box-sizing: border-box;
+  }
+
   .group__headline {
     margin-top: 0;
     padding-bottom: 10px;

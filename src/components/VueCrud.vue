@@ -12,6 +12,7 @@ import VueCrudEdit from './VueCrudEdit.vue'
 import VueCrudNew from './VueCrudNew.vue'
 import api from '../libs/api'
 import '../../theme/index.css'
+import 'vue-wysiwyg/dist/vueWysiwyg.css'
 import locale from 'element-ui/lib/locale/lang/en'
 
 Vue.use(ElementUI, {locale})
