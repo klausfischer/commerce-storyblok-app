@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <el-form-item label="Predefined">
       <el-select v-on:input="updateCannedMsg">
         <el-option :key="option.id" v-for="option in cannedMessages" :label="option.name" :value="option.id"></el-option>
@@ -37,6 +37,7 @@
     data () {
       return {
         cannedMessages: [],
+        loading: false,
         message: {
           subject: '',
           content: '',
@@ -64,12 +65,18 @@
         let mailApi = this.$resource(
           this.rootConfig.endPoint + '/mails/{id}', {}, {}, {headers: this.rootConfig.headers})
 
+        this.loading = true
+
         mailApi
           .save(this.message)
           .then((res) => {
             this.$message('Message sent successfully')
+            this.loading = false
           })
-          .catch(api.errorHandler)
+          .catch((res) => {
+            api.errorHandler(res)
+            this.loading = false
+          })
       },
       updateCannedMsg (val) {
         let msgs = this.cannedMessages.filter((item) => {
