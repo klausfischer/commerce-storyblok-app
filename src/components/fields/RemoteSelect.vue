@@ -107,6 +107,11 @@
 
             let newValue = v
             v = this.value
+
+            if (typeof v === 'undefined') {
+              v = []
+            }
+
             v.push(newValue)
           } else {
             this.proxyValue = value
