@@ -55,7 +55,7 @@
     },
     watch: {
       value () {
-        if (this.value && this.value !== '0' && this.value !== []) {
+        if (this.value && this.value !== '0' && this.value.constructor === Array && this.value.length > 0) {
           this.api.get({id: this.value, per_page: 1000})
             .then((res) => {
               this.setProxyValue(res.data)
