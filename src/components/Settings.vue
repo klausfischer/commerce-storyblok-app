@@ -69,6 +69,8 @@ export default {
     assignSettings (resData) {
       this.settings = resData
 
+      this.model.general_setting = {}
+
       for (let i = 0; i < resData.length; i++) {
         let data = resData[i]
         if (typeof this.model[data.code] === 'undefined') {
