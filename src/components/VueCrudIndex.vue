@@ -202,12 +202,16 @@ export default {
       if (res.headers.map[header]) {
         return parseInt(res.headers.map[header][0])
       }
+      let lowerHeader = header.toLowerCase()
+      if (res.headers.map[lowerHeader]) {
+        return parseInt(res.headers.map[lowerHeader][0])
+      }
       return 0
     },
 
     setTableData (res) {
-      this.pageSize = this.getHeader(res, 'per-page')
-      this.numFound = this.getHeader(res, 'total')
+      this.pageSize = this.getHeader(res, 'Per-Page')
+      this.numFound = this.getHeader(res, 'Total')
 
       if (this.config.rootObject) {
         this.tableData = res.body[this.config.rootObject]
