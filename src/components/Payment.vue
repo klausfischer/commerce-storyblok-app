@@ -13,7 +13,7 @@
         </div>
         <div v-if="!userIsConnected">
           <div v-if="!gotUrl">
-            <el-button type="primary" @click="connectStripe">Connect your Stripe account</el-button>
+            <el-button v-loading="loading" type="primary" @click="connectStripe">Connect your Stripe account</el-button>
           </div>
           <div v-if="gotUrl">
             <a :href="url" class="el-button el-button--primary" target="_blank">Click here to start connecting Stripe to this app</a>
@@ -87,11 +87,11 @@
 
 <script>
   export default {
-    props: ['model', 'settings', 'api'],
+    props: ['model', 'settings', 'api', 'rootConfig'],
 
     data () {
       return {
-        loading: true,
+        loading: false,
         gotUrl: false,
         url: ''
       }
