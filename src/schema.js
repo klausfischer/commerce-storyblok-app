@@ -321,6 +321,7 @@ export default {
       import: 'products',
       route: 'products',
       name: 'Products',
+      exportable: true,
       formFields: [
         {
           component: 'el-tab',
