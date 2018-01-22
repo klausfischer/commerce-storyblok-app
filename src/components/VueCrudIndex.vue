@@ -26,7 +26,7 @@
           <el-button @click="clearImport" v-if="showClearBtn">Clear</el-button>
         </div>
 
-        <el-button v-if="config.exportable" @click="doExport">
+        <el-button v-loading="exporting" v-if="config.exportable" @click="doExport">
           Export
         </el-button>
         <el-button v-if="!config.hideCreate" @click="$router.push({name: 'admin', params: {model: config.route, id: 'all', action: 'new'}})">
@@ -106,7 +106,8 @@ export default {
       term: '',
       showClearBtn: false,
       throttleCount: 0,
-      uploading: false
+      uploading: false,
+      exporting: false
     }
   },
 
@@ -147,10 +148,16 @@ export default {
 
   methods: {
     doExport () {
+      this.exporting = true
+
       this.apiResource
         .get({term: this.term, per_page: 1000, as_csv: true})
         .then((res) => {
+          this.exporting = false
           download(res.data.csv, 'entries.csv', 'text/csv')
+        })
+        .catch(() => {
+          this.exporting = false
         })
     },
 
