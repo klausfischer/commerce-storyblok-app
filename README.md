@@ -1,6 +1,6 @@
-# vue-crud
+# commerce-storyblok-app
 
-> A Vue.js project
+> A storyblok commerce demo app
 
 ## Build Setup
 
